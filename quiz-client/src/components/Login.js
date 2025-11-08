@@ -1,10 +1,35 @@
 import React, { useState } from 'react'
 import {TextField, Button, Box, Card, CardContent, Typography} from "@mui/material";
 import Center from './Center';
+import useForm from '../hooks/useForm';
+
+const getFreshModel = () => ({
+    name: '',
+    email: ''
+});
 
 export default function Login() {
 
-    cosnt [value, setValue] = useState({});
+    const {values,
+        setValues,
+        errors,
+        setErrors,
+        handleInputChange} = useForm(getFreshModel);
+
+    const login = e => {
+        e.preventDefault();
+        if (validate())
+            console.log(values);
+    };
+
+    const validate = () => {
+        let temp = {};
+        temp.email = (/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(values.email) ? "" : "Email is not valid";
+        temp.name = values.name != ""?"" : "This field is required"
+        setErrors(temp);
+        return Object.values(temp).every(x => x=="");
+    };
+    
 
   return (
     <Center>
@@ -19,12 +44,29 @@ export default function Login() {
                     width: '90%'
                 }
             }}>
-                <form noValidate>
-                    <TextField label="Email" name='email' variant='outlined'/>
-                    <TextField label="Name" name='name' variant='outlined'/>
+                <form noValidate onSubmit={login}>
+                    <TextField 
+                    label="Email" 
+                    name='email' 
+                    variant='outlined' 
+                    value={values.email}
+                    onChange={handleInputChange}
+                    {...(errors.email && {error: true, helperText:errors.email})}
+                    />
+
+                    <TextField 
+                    label="Name" 
+                    name='name' 
+                    variant='outlined'
+                    value={values.name}
+                    onChange={handleInputChange}
+                    {...(errors.name && {error: true, helperText:errors.name})}
+                    />
+
                     <Button type='submit' variant="contained" size='large' sx={{
                         width: '90%'
                     }}>Login</Button>
+
                 </form>
             </Box>
             </CardContent>
