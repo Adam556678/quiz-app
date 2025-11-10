@@ -4,6 +4,7 @@ import Center from './Center';
 import useForm from '../hooks/useForm';
 import { createAPIEndpoint, ENDPOINTS } from '../api';
 import useStateContext from '../hooks/useStateContext';
+import { useNavigate } from 'react-router-dom';
 
 const getFreshModel = () => ({
     name: '',
@@ -13,6 +14,7 @@ const getFreshModel = () => ({
 export default function Login() {
 
     const {context, setContext} = useStateContext();
+    const navigate = useNavigate();
 
     const {values,
         setValues,
@@ -22,11 +24,17 @@ export default function Login() {
 
     const login = e => {
         e.preventDefault();
+
+        // validate input
         if (validate())
             createAPIEndpoint(ENDPOINTS.participant)
             .post(values)
             .then(res => {
+                // update context value
                 setContext({participantId: res.data.participantId});
+
+                // navigate to quiz page
+                navigate('/quiz');
             })
             .catch(error => console.log(error));
     };

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizAPI.Data;
 using QuizAPI.Models;
 
@@ -19,10 +20,10 @@ namespace QuizAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Participant>> PostParticipant(Participant participant)
         {
-            var temp = _context.Participants
+            var temp = await _context.Participants
                         .Where(x => x.Name == participant.Name
                         && x.Email == participant.Email)
-                        .FirstOrDefault();
+                        .FirstOrDefaultAsync();
 
             if (temp == null)
             {
@@ -31,7 +32,7 @@ namespace QuizAPI.Controllers
                 await _context.SaveChangesAsync();
             }
             else
-                temp = participant;
+                participant = temp;
 
             return Ok(participant);
         }
