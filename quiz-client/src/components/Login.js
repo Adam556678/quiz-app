@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {TextField, Button, Box, Card, CardContent, Typography} from "@mui/material";
 import Center from './Center';
 import useForm from '../hooks/useForm';
+import { createAPIEndpoint, ENDPOINTS } from '../api';
 
 const getFreshModel = () => ({
     name: '',
@@ -9,6 +10,8 @@ const getFreshModel = () => ({
 });
 
 export default function Login() {
+
+    const [context, setContext] = useStateContext();
 
     const {values,
         setValues,
@@ -19,7 +22,12 @@ export default function Login() {
     const login = e => {
         e.preventDefault();
         if (validate())
-            console.log(values);
+            createAPIEndpoint(ENDPOINTS.participant)
+            .post(values)
+            .then(res => {
+                setContext({participantId: res.data.participantId});
+            })
+            .catch(error => console.log(error));
     };
 
     const validate = () => {
