@@ -14,11 +14,11 @@ export default function useStateContext(){
     const {context, setContext} = useContext(stateContext);
     return {
         context,
-        setContext: obj => {setContext({...context, obj})}
+        setContext: obj => {setContext({...context, ...obj})}
     }
 }
 
-export function contextProvider({children}) {
+export function ContextProvider({children}) {
 
     const [context, setContext] = useState(getFreshContext());
 

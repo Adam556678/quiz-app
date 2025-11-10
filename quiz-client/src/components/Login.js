@@ -3,6 +3,7 @@ import {TextField, Button, Box, Card, CardContent, Typography} from "@mui/materi
 import Center from './Center';
 import useForm from '../hooks/useForm';
 import { createAPIEndpoint, ENDPOINTS } from '../api';
+import useStateContext from '../hooks/useStateContext';
 
 const getFreshModel = () => ({
     name: '',
@@ -11,7 +12,7 @@ const getFreshModel = () => ({
 
 export default function Login() {
 
-    const [context, setContext] = useStateContext();
+    const {context, setContext} = useStateContext();
 
     const {values,
         setValues,
