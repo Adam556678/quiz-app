@@ -19,11 +19,12 @@ export default function Layout() {
             <Toolbar sx={{width: '640px', m: 'auto'}}>
                 <Typography 
                     variant='h4'
-                    align='center'>
+                    align='center'
+                    sx={{flexGrow:1}}>
                         Quiz App
                 </Typography>
 
-              <Button onClick={logout}>Logout</Button>
+              <Button color='inherit' onClick={logout}>Logout</Button>
             </Toolbar>
         </AppBar>
 

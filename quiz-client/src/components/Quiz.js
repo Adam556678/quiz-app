@@ -3,6 +3,7 @@ import { BASE_URL, createAPIEndpoint, ENDPOINTS } from '../api';
 import {Card, CardContent, List, ListItemButton, Typography, CardHeader, Box, LinearProgress, CardMedia} from "@mui/material";
 import { formatTime } from '../helpers';
 import useStateContext from '../hooks/useStateContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Quiz() {
 
@@ -11,6 +12,8 @@ export default function Quiz() {
   const [timeTaken, setTimeTaken] = useState(0);
   const {context, setContext} = useStateContext();
   let timer;
+
+  const navigate = useNavigate();
 
   const startTimer = () => {
     timer = setInterval(() => {
@@ -35,6 +38,7 @@ export default function Quiz() {
       })
 
       // navigate to Results component
+      navigate("/result")
 
     }
   }

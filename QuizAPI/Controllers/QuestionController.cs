@@ -44,5 +44,93 @@ namespace QuizAPI.Controllers
             }
 
         }
+
+        [HttpGet("id")]
+        public async Task<ActionResult<Question>> GetQeustion(int id)
+        {
+            try
+            {
+                var question = await _context.Questions.FindAsync(id);
+                if (question == null)
+                {
+                    return NotFound();
+                }
+                return Ok(question);
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine($"Error fetching question : {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPut("id")]
+        public async Task<IActionResult> PutQuestion(int id, Question question)
+        {
+            if (id != question.QnId)
+            {
+                return BadRequest();
+            }
+
+            // Treat this question object as an existing record that has been edited
+            _context.Entry(question).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();                
+            }
+            catch (DbUpdateConcurrencyException) //concurrency conflict
+            {
+                if (!QuestionExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("GetAnswers")]
+        public async Task<ActionResult<Question>> RetrieveAnswers(int[] qnIds)
+        {
+            var answers = await _context.Questions
+                .Where(x => qnIds.Contains(x.QnId))
+                .Select(y => new
+                {
+                    QnId = y.QnId,
+                    QnInWords = y.QnInWords,
+                    ImageName = y.ImageName,
+                    Options = new string[] { y.Option1, y.Option2, y.Option3, y.Option4 },
+                    Answer = y.Answer
+                }).ToListAsync();
+            
+            return Ok(answers);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteQuestion(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
+
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(question);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+    
+        private bool QuestionExists(int id)
+        {
+            return _context.Questions.Any(e => e.QnId == id);
+        }
     }
 }
