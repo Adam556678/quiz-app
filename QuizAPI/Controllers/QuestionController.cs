@@ -45,7 +45,7 @@ namespace QuizAPI.Controllers
 
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Question>> GetQeustion(int id)
         {
             try
@@ -64,7 +64,7 @@ namespace QuizAPI.Controllers
             }
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(int id, Question question)
         {
             if (id != question.QnId)
