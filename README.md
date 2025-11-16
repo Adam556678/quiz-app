@@ -179,12 +179,14 @@ http://localhost:3000/
 
 ## 📸 Screenshots
 
-(To be added)
+### Login Page
+![Login Page](./screen1.PNG)
 
-- Login Page  
-- Quiz Page  
-- Results Summary  
-- Answer Review Section  
+### Quiz Page
+![Quiz Page](./screen2.PNG)
+
+### Results Page  
+ ![Results Page](./screen3.PNG)
 
 ---
 
